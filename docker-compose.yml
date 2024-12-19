@@ -22,6 +22,9 @@ services:
     container_name: redis
     ports:
       - 6379:6379
+    # appendonly 启用 AOF（Append-Only File）持久化机制
+    # redis-cli -h 127.0.0.1 -p 6379 -a 123456
+    command: ["redis-server","--appendonly","yes", "--requirepass", "123456"]
     volumes:
       - ./redis/data:/data
     networks:
