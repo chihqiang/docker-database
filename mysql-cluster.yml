@@ -1,0 +1,53 @@
+version: "3"
+
+# # 进入主数据库查看
+# docker exec -it mysql-master bash
+# show master status;
+# File 和 Position 2个参数的值
+
+# # 进入从数据库进行配置
+# docker exec -it mysql-slave-1 bash
+# stop slave;
+# CHANGE MASTER TO
+#     MASTER_HOST='mysql-master',
+#     MASTER_USER='root',
+#     MASTER_PASSWORD='123456',
+#     MASTER_LOG_FILE='mysql-bin.000004',
+#     MASTER_LOG_POS=154;
+# start slave;
+
+networks:
+  mysql-cluster: 
+    driver: bridge
+
+services:
+  mysql-master:
+    container_name: mysql-master
+    image: hkccr.ccs.tencentyun.com/buildx/hub:mysql-5.7
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+      - ./mysql/config/master.cnf:/etc/mysql/my.cnf
+      - ./mysql/cluster/master/log:/var/log/mysql
+      - ./mysql/cluster/master/data:/var/lib/mysql
+    networks:
+      - mysql-cluster
+
+  mysql-slave-1:
+    container_name: mysql-slave-1
+    image: hkccr.ccs.tencentyun.com/buildx/hub:mysql-5.7
+    restart: always
+    privileged: true
+    ports:
+      - 33061:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    volumes:
+      - ./mysql/config/slave-1.cnf:/etc/mysql/my.cnf
+      - ./mysql/cluster/slave-1/log:/var/log/mysql
+      - ./mysql/cluster/slave-1/data:/var/lib/mysql
+    networks:
+      - mysql-cluster
