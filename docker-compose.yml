@@ -3,7 +3,7 @@ version: '3'
 services:
   mysql:
     container_name: mysql
-    image: mysql:8.4
+    image: hkccr.ccs.tencentyun.com/buildx/hub:mysql-5.7
     restart: always
     privileged: true
     ports:
