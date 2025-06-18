@@ -3,7 +3,7 @@ version: '3'
 services:
   mysql:
     container_name: mysql
-    image: hkccr.ccs.tencentyun.com/buildx/hub:mysql-5.7
+    image: registry.cn-hangzhou.aliyuncs.com/buildx/hub:mysql-5.7
     restart: always
     privileged: true
     ports:
@@ -20,7 +20,7 @@ services:
       - database-network
 
   # redis:
-  #   image: hkccr.ccs.tencentyun.com/buildx/hub:redis-7.4
+  #   image: registry.cn-hangzhou.aliyuncs.com/buildx/hub:redis-7.4
   #   container_name: redis
   #   ports:
   #     - 6379:6379
